@@ -1,0 +1,29 @@
+# One command: docker compose up
+# Opens on http://localhost:3000 with demo data and a simulated wallet.
+# For real sats, copy .env.example to .env and set LIGHTNING_BACKEND=lnbits.
+services:
+  natt:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      SEED_DEMO: ${SEED_DEMO:-1}
+      LIGHTNING_BACKEND: ${LIGHTNING_BACKEND:-simulated}
+      LNBITS_URL: ${LNBITS_URL:-}
+      LNBITS_INVOICE_KEY: ${LNBITS_INVOICE_KEY:-}
+      LNBITS_ADMIN_KEY: ${LNBITS_ADMIN_KEY:-}
+      NOSTR_RELAYS: ${NOSTR_RELAYS:-}
+      NATT_NOSTR_SECRET: ${NATT_NOSTR_SECRET:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      XOF_PER_SAT: ${XOF_PER_SAT:-0.55}
+    volumes:
+      - natt-data:/data
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+volumes:
+  natt-data:
