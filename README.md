@@ -6,7 +6,7 @@
 
 **Natt** puts the tontine on **Bitcoin Lightning**, keeps a tamper-evident
 group ledger on **Nostr**, and adds an **AI helper** that answers questions
-in plain French or English.
+in plain French, Wolof or English.
 
 Built for the **Dakar Bitcoin Hack by Btrust (2026)**. MIT licensed.
 
@@ -34,7 +34,7 @@ Full user story and pain points: [`docs/PROBLEM.md`](docs/PROBLEM.md).
 | 🔏 **Nobody can cheat** | Every payment and payout is a Nostr event signed by the group's key, and each one links to the previous one. Edit or delete a record and the chain breaks. The app shows a ✓ when the ledger verifies. |
 | 🛡️ **Guarded payout** | The pot is only released to the member whose turn it is, only after everyone has paid, and only to an invoice for the exact pot amount. |
 | 💬 **Natt Helper** | "C'est quand mon tour ?" "Qui n'a pas payé ?" Plain-language answers with FCFA amounts. Works offline with built-in answers; uses Claude when an API key is set. |
-| 📱 **Made for real phones** | ~60 KB PWA, no framework, French by default, large buttons, works on 3G, installable. Invites go out over WhatsApp. |
+| 📱 **Made for real phones** | ~60 KB PWA, no framework, in French, Wolof and English (French by default), large buttons, works on 3G, installable. Invites go out over WhatsApp. |
 
 ## Quick start (one command)
 
@@ -134,7 +134,7 @@ invoice to payment · payouts completed vs. scheduled · disputes raised.
 1. **Less custody:** hold invoices, so a member's payment only settles when the payout happens.
 2. **Nostr login (NIP-07 / NWC)** and encrypted group chat (NIP-17).
 3. **Reminders by SMS/WhatsApp**, drafted by Natt Helper.
-4. **Live XOF rate** and **Wolof** UI strings.
+4. **Live XOF rate**, and a review of the Wolof strings by native speakers.
 5. Pilot with 10 organizers at Marché HLM, Dakar.
 
 ## Pitch

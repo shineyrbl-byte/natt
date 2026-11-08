@@ -19,6 +19,12 @@ test('built-in answers cover turn and payment questions in French and English', 
   assert.match(builtInAnswer(view, 'Who has not paid?', 'en', 0.5), /Moussa, Awa.*includes you/);
 });
 
+test('built-in answers work in Wolof', () => {
+  assert.match(builtInAnswer(view, 'Kañ la sama wër ?', 'wo', 0.5), /Sa wër mooy 3.*Des na 2 wër/);
+  assert.match(builtInAnswer(view, 'Kan moo feyagul ?', 'wo', 0.5), /Feyaguñu : Moussa, Awa.*Yaw itam/);
+  assert.match(builtInAnswer({ ...view, status: 'completed' }, 'x', 'wo', 0.5), /jeex na/);
+});
+
 test('without an API key the assistant answers offline', async () => {
   const a = createAssistant({ apiKey: '', model: 'x', xofPerSat: 0.5 });
   const res = await a.ask({ view, question: 'bitcoin ?', lang: 'fr' });

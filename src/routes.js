@@ -77,7 +77,7 @@ export function createRoutes({ config, wallet, ledger, tontine, assistant }) {
 
   if (assistant) {
     r.post('/groups/:groupId/assistant', auth, async (req, res) => {
-      const { question, lang } = validate({ question: str(1, 500, { label: 'Question' }), lang: oneOf(['fr', 'en'], { optional: true }) }, req.body);
+      const { question, lang } = validate({ question: str(1, 500, { label: 'Question' }), lang: oneOf(['fr', 'wo', 'en'], { optional: true }) }, req.body);
       res.json(await assistant.ask({ view: tontine.view(req.params.groupId, req.member), question, lang: lang || 'fr' }));
     });
   }

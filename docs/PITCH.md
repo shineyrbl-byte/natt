@@ -15,7 +15,7 @@ and every payment is a signed receipt on Nostr that nobody can edit."
 **1:00 – Live demo (90 s)**
 1. Show the group screen in French: round 1, Fatou receives, 3 of 5 paid.
 2. As Aminata: tap Pay, show the QR code, pay. The bar moves to 4/5.
-3. Switch language to English with one tap.
+3. Tap the language button: the app switches to Wolof, then English. Ask the helper « Kañ la sama wër ? ».
 4. As Fatou: everyone has paid, so paste an invoice and tap Receive the pot. Round 2 opens.
 5. Open the public ledger: signed receipts and a ✓ "nothing changed".
 6. Ask Natt Helper "Who hasn't paid?"

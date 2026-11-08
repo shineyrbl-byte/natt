@@ -23,7 +23,11 @@ const store = {
   },
 };
 
-let lang = store.get('lang', navigator.language?.startsWith('en') ? 'en' : 'fr');
+const LANGS = ['fr', 'wo', 'en'];
+const detected = navigator.language?.startsWith('wo') ? 'wo' : navigator.language?.startsWith('en') ? 'en' : 'fr';
+let lang = LANGS.includes(store.get('lang')) ? store.get('lang') : detected;
+// Wolof speakers in Senegal read numbers the French way.
+const locale = () => (lang === 'en' ? 'en-US' : 'fr-FR');
 let config = { xofPerSat: 0.55, demo: false, ai: false };
 let pollTimer = null;
 
@@ -32,8 +36,8 @@ function t(key, vars = {}) {
   return s.replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ''));
 }
 
-const fcfa = (sats) => Math.round(sats * config.xofPerSat).toLocaleString(lang === 'fr' ? 'fr-FR' : 'en-US');
-const num = (n) => Number(n).toLocaleString(lang === 'fr' ? 'fr-FR' : 'en-US');
+const fcfa = (sats) => Math.round(sats * config.xofPerSat).toLocaleString(locale());
+const num = (n) => Number(n).toLocaleString(locale());
 
 // Build DOM nodes safely: text always goes through textContent.
 function h(tag, attrs = {}, ...children) {
@@ -592,11 +596,15 @@ async function render() {
 
 function applyLang() {
   document.documentElement.lang = lang;
-  document.getElementById('lang').textContent = lang === 'fr' ? 'EN' : 'FR';
+  // The button shows the language you switch to next.
+  const next = LANGS[(LANGS.indexOf(lang) + 1) % LANGS.length];
+  const btn = document.getElementById('lang');
+  btn.textContent = next.toUpperCase();
+  btn.setAttribute('aria-label', { fr: 'Passer en français', wo: 'Soppi ci wolof', en: 'Switch to English' }[next]);
 }
 
 document.getElementById('lang').addEventListener('click', () => {
-  lang = lang === 'fr' ? 'en' : 'fr';
+  lang = LANGS[(LANGS.indexOf(lang) + 1) % LANGS.length];
   store.set('lang', lang);
   applyLang();
   render();
