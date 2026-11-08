@@ -33,7 +33,7 @@ export function loadConfig(env = process.env) {
     // Display-only exchange rate. Amounts are always stored in sats.
     xofPerSat: Number(env.XOF_PER_SAT || '0.55'),
     anthropicApiKey: env.ANTHROPIC_API_KEY || '',
-    anthropicModel: env.ANTHROPIC_MODEL || 'claude-haiku-5-5',
+    anthropicModel: env.ANTHROPIC_MODEL || 'claude-opus-5-5',
     rateLimitPerMinute: int('RATE_LIMIT_PER_MINUTE', 120),
   });
 }
