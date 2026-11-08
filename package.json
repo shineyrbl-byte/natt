@@ -10,6 +10,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
+    "demo": "rm -rf data/demo && DB_PATH=data/demo/natt.db SEED_DEMO=1 node src/server.js",
     "test": "NODE_ENV=test node --test"
   },
   "keywords": [

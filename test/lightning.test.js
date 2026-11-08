@@ -61,3 +61,14 @@ test('lightning address rejects invoice with wrong amount', async () => {
   });
   await assert.rejects(invoiceFromAddress('awa@pay.example', 1000, fetchImpl), /wrong invoice/);
 });
+
+test('simulated wallet state survives a restart when backed by SQLite', async () => {
+  const { openDb } = await import('../src/db.js');
+  const db = openDb(':memory:');
+  const w1 = createSimulatedWallet({ db });
+  const inv = await w1.createInvoice({ amountSats: 700, memo: 'x' });
+  w1.markPaid(inv.paymentHash);
+  const w2 = createSimulatedWallet({ db });
+  assert.equal(await w2.isPaid(inv.paymentHash), true);
+  assert.equal(await w2.getBalance(), 700);
+});

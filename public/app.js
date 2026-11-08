@@ -51,6 +51,11 @@ function h(tag, attrs = {}, ...children) {
   return el;
 }
 
+// replaceChildren() would print null as text, so skip empty parts.
+function setChildren(el, ...nodes) {
+  el.replaceChildren(...nodes.flat().filter(Boolean));
+}
+
 function toast(msg) {
   const el = document.getElementById('toast');
   el.textContent = msg;
@@ -446,7 +451,7 @@ function helperCard(gid, auth) {
       }, err),
     },
     h('h2', {}, '💬 ', t('helper')),
-    field(t('helperHint'), input),
+    field(t('question'), input),
     err,
     out,
     h('button', { type: 'submit', class: 'secondary' }, t('ask')),
@@ -483,7 +488,7 @@ async function viewGroup(gid, params) {
     const pct = v.round ? Math.round((v.round.paidCount / total) * 100) : 0;
     const receiver = v.members.find((m) => m.id === v.round?.recipientId);
 
-    live.replaceChildren(
+    setChildren(live, 
       h('h1', {}, v.name),
       h('p', {}, statusPill(v.status), ' ', h('span', { class: 'muted' }, `${num(v.contributionSats)} sats ${t(v.frequency === 'weekly' ? 'perWeek' : 'perMonth')}`)),
       demoBanner(),

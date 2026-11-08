@@ -6,9 +6,9 @@
 import { createSimulatedWallet } from './simulated.js';
 import { createLnbitsWallet } from './lnbits.js';
 
-export function createWallet(config) {
+export function createWallet(config, db) {
   if (config.lightningBackend === 'lnbits') return createLnbitsWallet(config.lnbits);
-  return createSimulatedWallet();
+  return createSimulatedWallet({ db });
 }
 
 export { decodeInvoice } from './bolt11.js';
