@@ -1,0 +1,17 @@
+{
+  "name": "natt",
+  "version": "0.1.0",
+  "description": "Lightning tontines (rotating savings groups) with a Nostr ledger and an AI helper",
+  "type": "module",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test"
+  },
+  "keywords": ["bitcoin", "lightning", "nostr", "tontine", "africa", "senegal"],
+  "license": "MIT"
+}
