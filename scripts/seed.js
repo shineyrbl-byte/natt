@@ -2,11 +2,12 @@
 // Run with `npm run demo` (fresh database + seed + server).
 import { log } from '../src/logger.js';
 
+// Fake numbers (all zeros) so no real person is contacted from the demo.
 const PEOPLE = [
-  { name: 'Awa', phone: '+221 77 123 45 67' },
+  { name: 'Awa', phone: '+221 77 000 00 01' },
   { name: 'Fatou' },
-  { name: 'Moussa', phone: '+221 76 555 12 34' },
-  { name: 'Aminata' },
+  { name: 'Moussa', phone: '+221 77 000 00 03' },
+  { name: 'Aminata', phone: '77 000 00 04' },
   { name: 'Ibrahima' },
 ];
 

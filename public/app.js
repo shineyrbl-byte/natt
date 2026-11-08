@@ -298,8 +298,29 @@ function statusPill(status) {
   return h('span', { class: `pill ${cls}` }, t(status));
 }
 
+// WhatsApp wants international digits. Local Senegalese numbers
+// (9 digits starting with 7 or 3) get the +221 country code.
+function waLink(text, phone) {
+  let digits = (phone || '').replace(/\D/g, '');
+  if (/^[37]\d{8}$/.test(digits)) digits = `221${digits}`;
+  return `https://wa.me/${digits}?text=${encodeURIComponent(text)}`;
+}
+
+const extLink = (href, attrs, ...children) => h('a', { href, target: '_blank', rel: 'noopener noreferrer', ...attrs }, ...children);
+
+// Organizer only: unpaid members this round, minus the organizer.
+function toRemind(v) {
+  if (!v.you?.isOrganizer || v.status !== 'active') return [];
+  return v.members.filter((m) => !m.paidThisRound && m.id !== v.you.id);
+}
+
+function remindText(v, m) {
+  return t('remindText', { name: m.name, group: v.name, sats: num(v.contributionSats), fcfa: fcfa(v.contributionSats), n: v.round.number });
+}
+
 function memberList(v) {
   const now = v.round?.recipientId;
+  const remindIds = new Set(toRemind(v).map((m) => m.id));
   return h(
     'ul',
     { class: 'members' },
@@ -317,9 +338,19 @@ function memberList(v) {
           m.phone ? h('span', { class: 'hint' }, ` · ${m.phone}`) : null,
         ),
         v.status === 'active' ? h('span', { class: `pill ${m.paidThisRound ? 'ok' : 'warn'}` }, m.paidThisRound ? `✓ ${t('paid')}` : t('notPaid')) : null,
+        remindIds.has(m.id)
+          ? extLink(waLink(remindText(v, m), m.phone), { class: 'remind', title: t('remind', { name: m.name }), 'aria-label': t('remind', { name: m.name }) }, '🔔')
+          : null,
       ),
     ),
   );
+}
+
+function remindGroupButton(v) {
+  const late = toRemind(v);
+  if (!late.length) return null;
+  const text = t('remindAllText', { group: v.name, n: v.round.number, names: late.map((m) => m.name).join(', ') });
+  return extLink(waLink(text), { class: 'btn secondary' }, '🔔 ', t('remindGroup'));
 }
 
 function inviteCard(v) {
@@ -334,7 +365,7 @@ function inviteCard(v) {
       'div',
       { class: 'row' },
       navigator.share ? h('button', { type: 'button', onclick: () => navigator.share({ text }).catch(() => {}) }, t('share')) : null,
-      h('a', { class: 'btn secondary', href: `https://wa.me/?text=${encodeURIComponent(text)}`, target: '_blank', rel: 'noopener noreferrer' }, t('whatsapp')),
+      extLink(waLink(text), { class: 'btn secondary' }, t('whatsapp')),
       h('button', { type: 'button', class: 'secondary', onclick: () => copy(url) }, t('copy')),
     ),
   );
@@ -509,7 +540,7 @@ async function viewGroup(gid, params) {
           )
         : null,
       v.status === 'completed' ? h('section', { class: 'card hero' }, h('div', { class: 'big' }, '🎉'), h('p', {}, t('done'))) : null,
-      h('section', { class: 'card' }, h('h2', {}, `👥 ${total}/${v.maxMembers}`), memberList(v)),
+      h('section', { class: 'card stack' }, h('h2', {}, `👥 ${total}/${v.maxMembers}`), memberList(v), remindGroupButton(v)),
     );
 
     // Only rebuild the action area when the situation changes, so a

@@ -83,6 +83,10 @@ export const STRINGS = {
     demoBanner: 'Mode démo : aucun vrai bitcoin n’est utilisé.',
     error: 'Erreur',
     offline: 'Pas de connexion. Réessayez dans un instant.',
+    remind: 'Rappeler {name} sur WhatsApp',
+    remindGroup: 'Rappel au groupe WhatsApp',
+    remindText: 'Bonjour {name} ! Petit rappel pour notre natt « {group} » : votre cotisation de {sats} sats (≈ {fcfa} FCFA) pour le tour {n} est attendue. Ouvrez Natt pour payer. Jërëjëf !',
+    remindAllText: 'Rappel natt « {group} », tour {n} : il manque encore la cotisation de {names}. Ouvrez Natt pour payer. Jërëjëf !',
     noGroups: 'Aucun groupe pour l’instant.',
   },
   wo: {
@@ -166,6 +170,10 @@ export const STRINGS = {
     demoBanner: 'Mode demo : amul bitcoin bu dëgg bu ñuy jëfandikoo.',
     error: 'Njuumte',
     offline: 'Amul connexion. Jéemaatal ci kanam tuuti.',
+    remind: 'Fàttali {name} ci WhatsApp',
+    remindGroup: 'Fàttali mbootaay bi ci WhatsApp',
+    remindText: 'Salaam {name} ! Fàttali tuuti ci sunu natt « {group} » : sa natt bu {sats} sats (≈ {fcfa} FCFA) ci wër {n} ñu ngi koy xaar. Ubbil Natt ngir fey. Jërëjëf !',
+    remindAllText: 'Fàttali natt « {group} », wër {n} : {names} feyaguñu. Ubbileen Natt ngir fey. Jërëjëf !',
     noGroups: 'Amagul benn mbootaay.',
   },
   en: {
@@ -249,6 +257,10 @@ export const STRINGS = {
     demoBanner: 'Demo mode: no real bitcoin is used.',
     error: 'Error',
     offline: 'No connection. Please try again in a moment.',
+    remind: 'Remind {name} on WhatsApp',
+    remindGroup: 'Remind the WhatsApp group',
+    remindText: 'Hi {name}! A quick reminder for our natt “{group}”: your {sats} sats (≈ {fcfa} FCFA) for round {n} is due. Open Natt to pay. Jërëjëf!',
+    remindAllText: 'Natt “{group}” reminder, round {n}: still waiting for {names}. Open Natt to pay. Jërëjëf!',
     noGroups: 'No groups yet.',
   },
 };
