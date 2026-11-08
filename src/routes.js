@@ -20,7 +20,7 @@ const joinSchema = {
 const payoutSchema = { destination: str(5, 2000, { label: 'Invoice or Lightning address' }) };
 
 // Express 5 forwards rejected promises to the error handler.
-export function createRoutes({ config, wallet, ledger, tontine, assistant }) {
+export function createRoutes({ config, wallet, ledger, tontine, assistant, rate }) {
   const r = Router();
 
   r.param('groupId', (req, res, next, id) => (GROUP_ID.test(id) ? next() : next(notFound())));
@@ -32,7 +32,8 @@ export function createRoutes({ config, wallet, ledger, tontine, assistant }) {
   };
 
   r.get('/config', (req, res) => {
-    res.json({ lightning: wallet.name, xofPerSat: config.xofPerSat, demo: wallet.name === 'simulated', ai: Boolean(config.anthropicApiKey) });
+    const { xofPerSat, source, updatedAt } = rate?.get() ?? { xofPerSat: config.xofPerSat, source: 'fixed', updatedAt: null };
+    res.json({ lightning: wallet.name, xofPerSat, rate: { source, updatedAt }, demo: wallet.name === 'simulated', ai: Boolean(config.anthropicApiKey) });
   });
 
   r.post('/groups', (req, res) => {

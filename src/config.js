@@ -31,7 +31,9 @@ export function loadConfig(env = process.env) {
       .map((s) => s.trim())
       .filter(Boolean),
     // Display-only exchange rate. Amounts are always stored in sats.
+    // XOF_PER_SAT is the fallback when the live price can't be fetched.
     xofPerSat: Number(env.XOF_PER_SAT || '0.55'),
+    liveRate: (env.LIVE_RATE ?? (env.NODE_ENV === 'test' ? '0' : '1')) === '1',
     anthropicApiKey: env.ANTHROPIC_API_KEY || '',
     anthropicModel: env.ANTHROPIC_MODEL || 'claude-opus-5-5',
     rateLimitPerMinute: int('RATE_LIMIT_PER_MINUTE', 120),

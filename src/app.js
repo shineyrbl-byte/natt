@@ -7,7 +7,7 @@ import { log } from './logger.js';
 const PUBLIC_DIR = fileURLToPath(new URL('../public', import.meta.url));
 const QR_MODULE = fileURLToPath(new URL('../node_modules/qrcode-generator/dist/qrcode.mjs', import.meta.url));
 
-export function createApp({ config, wallet, ledger, tontine, assistant }) {
+export function createApp({ config, wallet, ledger, tontine, assistant, rate }) {
   const app = express();
   app.disable('x-powered-by');
   app.set('trust proxy', 'loopback');
@@ -18,7 +18,7 @@ export function createApp({ config, wallet, ledger, tontine, assistant }) {
 
   app.get('/api/health', (req, res) => res.json({ ok: true, lightning: wallet.name }));
   app.use('/api', rateLimit({ perMinute: config.rateLimitPerMinute }));
-  app.use('/api', createRoutes({ config, wallet, ledger, tontine, assistant }));
+  app.use('/api', createRoutes({ config, wallet, ledger, tontine, assistant, rate }));
 
   app.get('/vendor/qrcode.mjs', (req, res) => res.type('text/javascript').sendFile(QR_MODULE, { maxAge: '7d' }));
   app.use(express.static(PUBLIC_DIR, { maxAge: '1h', index: 'index.html' }));

@@ -123,7 +123,7 @@ Threat model with 11 threats and their mitigations: [`docs/THREAT_MODEL.md`](doc
 
 - The pot sits in the group's LNbits wallet between collection and payout (custodial for that window).
 - Payment detection polls the backend when the app refreshes. There are no webhooks yet.
-- FCFA amounts use a configurable display rate, not a live price feed.
+- FCFA amounts are for display only. The server reads BTC/EUR from mempool.space every 10 minutes (FCFA is pegged to the euro) and falls back to `XOF_PER_SAT` when offline. Set `LIVE_RATE=0` to turn it off.
 
 ## Metrics we will track
 
@@ -135,7 +135,7 @@ invoice to payment · payouts completed vs. scheduled · disputes raised.
 1. **Less custody:** hold invoices, so a member's payment only settles when the payout happens.
 2. **Nostr login (NIP-07 / NWC)** and encrypted group chat (NIP-17).
 3. **Scheduled reminders** (SMS for members without WhatsApp).
-4. **Live XOF rate**, and a review of the Wolof strings by native speakers.
+4. A review of the Wolof strings by native speakers.
 5. Pilot with 10 organizers at Marché HLM, Dakar.
 
 ## Pitch

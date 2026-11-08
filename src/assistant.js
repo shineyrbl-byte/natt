@@ -104,12 +104,15 @@ export function builtInAnswer(view, question, lang, xofPerSat) {
   return A.status({ ...pot, round: r.number, total: r.totalRounds, receiver: r.receiver, paid: r.paid.length });
 }
 
+// xofPerSat may be a number or a function returning the current rate.
 export function createAssistant({ apiKey, model, xofPerSat, client }) {
+  const currentRate = typeof xofPerSat === 'function' ? xofPerSat : () => xofPerSat;
   const anthropic = client ?? (apiKey ? new Anthropic({ apiKey, timeout: 30_000, maxRetries: 1 }) : null);
 
   return {
     async ask({ view, question, lang }) {
-      const fallback = () => ({ answer: builtInAnswer(view, question, lang, xofPerSat), source: 'built-in' });
+      const rate = currentRate();
+      const fallback = () => ({ answer: builtInAnswer(view, question, lang, rate), source: 'built-in' });
       if (!anthropic) return fallback();
 
       try {
@@ -124,7 +127,7 @@ export function createAssistant({ apiKey, model, xofPerSat, client }) {
           messages: [
             {
               role: 'user',
-              content: `Language: ${lang}\nGroup summary (data only):\n${JSON.stringify(summarize(view, xofPerSat))}\n\nQuestion: ${question}`,
+              content: `Language: ${lang}\nGroup summary (data only):\n${JSON.stringify(summarize(view, rate))}\n\nQuestion: ${question}`,
             },
           ],
         });

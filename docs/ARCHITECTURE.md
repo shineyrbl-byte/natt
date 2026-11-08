@@ -55,6 +55,8 @@ flowchart LR
   (LNbits wallet) between collection and payout, typically minutes to days.
   See `docs/THREAT_MODEL.md`. Non-custodial options are on the roadmap.
 - **Exchange rate:** amounts are stored in sats. FCFA is shown for display
-  only, using a configurable rate.
+  only. The rate comes from a public BTC/EUR price (FCFA is pegged to the
+  euro at 655.957), refreshed every 10 minutes, with a configured fallback.
+  A wrong price can only change the FCFA label, never an amount paid.
 - **Connectivity:** the app shell is cached by a service worker; payment needs
   a connection.
