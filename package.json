@@ -10,8 +10,20 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "test": "node --test"
+    "test": "NODE_ENV=test node --test"
   },
-  "keywords": ["bitcoin", "lightning", "nostr", "tontine", "africa", "senegal"],
-  "license": "MIT"
+  "keywords": [
+    "bitcoin",
+    "lightning",
+    "nostr",
+    "tontine",
+    "africa",
+    "senegal"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.3.0",
+    "light-bolt11-decoder": "^3.2.0",
+    "nostr-tools": "^2.26.0"
+  }
 }
