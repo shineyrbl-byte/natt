@@ -1,6 +1,6 @@
 # Natt ⚡ Lightning tontines for West Africa
 
-**▶ Live demo: https://natt-dakar.fly.dev** (demo wallet, no real bitcoin). Tap a member under "Try the demo".
+**▶ Live demo: https://shineyrbl-byte.github.io/natt/** (demo wallet, no real bitcoin). Tap a member under "Try the demo".
 **🎬 Demo video (3 min): https://youtu.be/Wv3Vld1ncZw**
 **📑 Slides (PDF): [`docs/Natt-presentation.pdf`](docs/Natt-presentation.pdf)**
 
@@ -41,9 +41,10 @@ Full user story and pain points: [`docs/PROBLEM.md`](docs/PROBLEM.md).
 | 🔔 **WhatsApp reminders** | The organizer taps 🔔 next to anyone who hasn't paid and WhatsApp opens with a polite reminder, ready to send (in French, Wolof or English). One more tap reminds the whole WhatsApp group. Natt never sends messages by itself. |
 | 📱 **Made for real phones** | ~60 KB PWA, no framework, in French, Wolof and English (French by default), large buttons, works on 3G, installable. Invites go out over WhatsApp. |
 
-## Hosted demo
+## Hosted demos
 
-`fly.toml` deploys the demo to Fly.io with `fly deploy`: simulated wallet, public "Try the demo" buttons and a live FCFA rate. There is no volume, so every fresh machine starts with a clean demo group.
+- **Browser demo (GitHub Pages): https://shineyrbl-byte.github.io/natt/.** Natt's real tontine, wallet and Nostr ledger code runs inside the page, with SQLite compiled to WebAssembly (`browser/`, built by `npm run build:pages`). Each visitor gets their own demo group, saved in their browser; "Start the demo again" resets it. Free, always on, nothing sent to a server.
+- **Server demo (Fly.io):** https://natt-dakar.fly.dev, the full Node server, online until 16 Nov 2026 (trial). `fly.toml` deploys it with `fly deploy`.
 
 ## Quick start (one command)
 

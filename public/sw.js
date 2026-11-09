@@ -1,7 +1,8 @@
 // Cache the app shell so Natt opens instantly on slow networks.
 // API calls always go to the network (payments must be live).
-const CACHE = 'natt-v7';
-const SHELL = ['/', '/index.html', '/styles.css', '/app.js', '/i18n.js', '/vendor/qrcode.mjs', '/icons/icon.svg', '/manifest.webmanifest'];
+const CACHE = 'natt-v8';
+// Relative paths, so the app also works from a sub-folder (GitHub Pages).
+const SHELL = ['./', 'index.html', 'styles.css', 'app.js', 'i18n.js', 'vendor/qrcode.mjs', 'icons/icon.svg', 'manifest.webmanifest'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
@@ -15,7 +16,7 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
-  if (e.request.method !== 'GET' || url.origin !== location.origin || url.pathname.startsWith('/api/')) return;
+  if (e.request.method !== 'GET' || url.origin !== location.origin || url.pathname.includes('/api/')) return;
   // Network first, cache as fallback, so updates arrive quickly.
   e.respondWith(
     fetch(e.request)
@@ -24,6 +25,6 @@ self.addEventListener('fetch', (e) => {
         caches.open(CACHE).then((c) => c.put(e.request, copy));
         return res;
       })
-      .catch(() => caches.match(e.request).then((r) => r || caches.match('/index.html'))),
+      .catch(() => caches.match(e.request).then((r) => r || caches.match('index.html'))),
   );
 });

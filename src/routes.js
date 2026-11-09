@@ -1,25 +1,10 @@
 import { Router } from 'express';
-import { validate, str, int, oneOf, PHONE } from './validate.js';
+import { validate } from './validate.js';
+import { GROUP_ID, createSchema, joinSchema, payoutSchema, askSchema, devPaySchema, devInvoiceSchema } from './schemas.js';
 import { verifyLedger } from './nostr.js';
 import { badRequest, notFound } from './errors.js';
 import { readFileSync } from 'node:fs';
 import { demoLinksPath } from './config.js';
-
-const GROUP_ID = /^[A-Za-z0-9_-]{8}$/;
-
-const createSchema = {
-  name: str(2, 60, { label: 'Group name' }),
-  contributionSats: int(100, 10_000_000, { label: 'Contribution' }),
-  frequency: oneOf(['weekly', 'monthly'], { label: 'Frequency' }),
-  maxMembers: int(2, 50, { label: 'Number of members' }),
-  organizerName: str(1, 40, { label: 'Your name' }),
-  organizerPhone: str(8, 20, { pattern: PHONE, optional: true, label: 'Phone number' }),
-};
-const joinSchema = {
-  name: str(1, 40, { label: 'Your name' }),
-  phone: str(8, 20, { pattern: PHONE, optional: true, label: 'Phone number' }),
-};
-const payoutSchema = { destination: str(5, 2000, { label: 'Invoice or Lightning address' }) };
 
 // Express 5 forwards rejected promises to the error handler.
 export function createRoutes({ config, wallet, ledger, tontine, assistant, rate }) {
@@ -93,7 +78,7 @@ export function createRoutes({ config, wallet, ledger, tontine, assistant, rate 
 
   if (assistant) {
     r.post('/groups/:groupId/assistant', auth, async (req, res) => {
-      const { question, lang } = validate({ question: str(1, 500, { label: 'Question' }), lang: oneOf(['fr', 'wo', 'en'], { optional: true }) }, req.body);
+      const { question, lang } = validate(askSchema, req.body);
       res.json(await assistant.ask({ view: tontine.view(req.params.groupId, req.member), question, lang: lang || 'fr' }));
     });
   }
@@ -101,12 +86,12 @@ export function createRoutes({ config, wallet, ledger, tontine, assistant, rate 
   // Demo-only helpers, mounted only with the simulated wallet.
   if (wallet.name === 'simulated') {
     r.post('/dev/pay', (req, res) => {
-      const { paymentHash } = validate({ paymentHash: str(64, 64, { pattern: /^[0-9a-f]{64}$/ }) }, req.body);
+      const { paymentHash } = validate(devPaySchema, req.body);
       if (!wallet.markPaid(paymentHash)) throw notFound('Invoice not found');
       res.json({ ok: true });
     });
     r.post('/dev/payout-invoice', async (req, res) => {
-      const { amountSats } = validate({ amountSats: int(1, 1_000_000_000) }, req.body);
+      const { amountSats } = validate(devInvoiceSchema, req.body);
       res.json({ bolt11: await wallet.makeExternalInvoice(amountSats) });
     });
   }

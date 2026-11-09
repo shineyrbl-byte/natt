@@ -11,7 +11,9 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "demo": "rm -rf data/demo && DB_PATH=data/demo/natt.db SEED_DEMO=1 node src/server.js",
-    "test": "NODE_ENV=test node --test"
+    "test": "NODE_ENV=test node --test",
+    "build:pages": "node scripts/build-pages.mjs",
+    "preview:pages": "npm run build:pages && npx --yes serve@14.2.4 dist-pages -l 3060"
   },
   "keywords": [
     "bitcoin",
@@ -30,5 +32,11 @@
     "light-bolt11-decoder": "^3.2.0",
     "nostr-tools": "^2.26.0",
     "qrcode-generator": "^2.0.4"
+  },
+  "devDependencies": {
+    "@noble/hashes": "^2.4.0",
+    "buffer": "^6.0.3",
+    "esbuild": "^0.28.2",
+    "sql.js": "^1.15.2"
   }
 }

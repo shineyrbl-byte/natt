@@ -92,6 +92,8 @@ export const STRINGS = {
     helperQ1: 'C’est quand mon tour ?',
     helperQ2: 'Qui n’a pas payé ?',
     helperOpen: 'Poser une question à Natt Helper',
+    browserDemoNote: 'Démo dans le navigateur : tout tourne sur votre appareil, rien n’est envoyé à un serveur.',
+    resetDemo: 'Recommencer la démo',
     noGroups: 'Aucun groupe pour l’instant.',
   },
   wo: {
@@ -184,6 +186,8 @@ export const STRINGS = {
     helperQ1: 'Kañ la sama wër ?',
     helperQ2: 'Kan moo feyagul ?',
     helperOpen: 'Laaj Natt Helper',
+    browserDemoNote: 'Demo ci navigateur bi : lépp ci sa appareil lay dox, dara du dem ci serveur.',
+    resetDemo: 'Tambaliwaat demo bi',
     noGroups: 'Amagul benn mbootaay.',
   },
   en: {
@@ -276,6 +280,8 @@ export const STRINGS = {
     helperQ1: 'When is my turn?',
     helperQ2: 'Who hasn’t paid?',
     helperOpen: 'Ask Natt Helper a question',
+    browserDemoNote: 'Browser demo: everything runs on your device, nothing is sent to a server.',
+    resetDemo: 'Start the demo again',
     noGroups: 'No groups yet.',
   },
 };

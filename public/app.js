@@ -1,7 +1,7 @@
 // Natt web app. Plain JS, no framework, no innerHTML with user data
 // (docs/THREAT_MODEL.md, T9). Secrets live in this device's storage only.
-import qrcode from '/vendor/qrcode.mjs';
-import { STRINGS } from '/i18n.js';
+import qrcode from './vendor/qrcode.mjs';
+import { STRINGS } from './i18n.js';
 
 // ---------- small helpers ----------
 
@@ -77,12 +77,25 @@ async function copy(text) {
   }
 }
 
+// The app's own address without the #route, so links work from a sub-folder.
+const appBase = () => location.href.split('#')[0];
+
 async function api(method, path, body, auth) {
   const headers = { 'Content-Type': 'application/json' };
   if (auth) Object.assign(headers, { 'x-member-id': auth.memberId, 'x-member-token': auth.token });
+  // Browser-only demo (GitHub Pages): the server runs inside this page.
+  if (window.nattLocalApi) {
+    try {
+      return await window.nattLocalApi(method, path, body, headers);
+    } catch (e) {
+      const err = new Error(e.message || t('error'));
+      err.status = e.status;
+      throw err;
+    }
+  }
   let res;
   try {
-    res = await fetch(`/api${path}`, { method, headers, body: body ? JSON.stringify(body) : undefined });
+    res = await fetch(`api${path}`, { method, headers, body: body ? JSON.stringify(body) : undefined });
   } catch {
     throw new Error(t('offline'));
   }
@@ -133,7 +146,7 @@ function saveMembership(groupId, data) {
   all[groupId] = { ...all[groupId], ...data };
   store.set('groups', all);
 }
-const secretLink = (gid, m) => `${location.origin}/#/g/${gid}?m=${encodeURIComponent(m.memberId)}&t=${encodeURIComponent(m.token)}`;
+const secretLink = (gid, m) => `${appBase()}#/g/${gid}?m=${encodeURIComponent(m.memberId)}&t=${encodeURIComponent(m.token)}`;
 
 // ---------- views ----------
 
@@ -153,7 +166,15 @@ function demoCard() {
   api('GET', '/demo')
     .then((d) => setChildren(list, d.members.sort((a, b) => a.position - b.position).map((m) => h('a', { class: 'btn secondary', href: m.path }, m.name))))
     .catch(() => list.closest('section')?.remove());
-  return h('section', { class: 'card stack' }, h('h2', {}, '🧪 ', t('tryDemo')), h('p', { class: 'muted small' }, t('tryDemoHint')), list);
+  return h(
+    'section',
+    { class: 'card stack' },
+    h('h2', {}, '🧪 ', t('tryDemo')),
+    h('p', { class: 'muted small' }, t('tryDemoHint')),
+    list,
+    config.browserDemo ? h('p', { class: 'hint' }, t('browserDemoNote')) : null,
+    config.browserDemo && window.nattResetDemo ? h('button', { type: 'button', class: 'secondary', onclick: () => window.nattResetDemo() }, '↺ ', t('resetDemo')) : null,
+  );
 }
 
 function viewHome() {
@@ -364,7 +385,7 @@ function remindGroupButton(v) {
 }
 
 function inviteCard(v) {
-  const url = `${location.origin}/#/join/${v.id}`;
+  const url = `${appBase()}#/join/${v.id}`;
   const text = t('inviteText', { name: v.name, url });
   return h(
     'section',
@@ -692,5 +713,5 @@ window.addEventListener('hashchange', render);
   // Keep the FCFA rate fresh on phones that stay open; the group view
   // redraws amounts on its next refresh.
   setInterval(loadConfig, 10 * 60_000);
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 })();
