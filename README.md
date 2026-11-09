@@ -2,6 +2,7 @@
 
 **▶ Live demo: https://natt-dakar.fly.dev** (demo wallet, no real bitcoin). Tap a member under "Try the demo".
 **🎬 Demo video (3 min): https://youtu.be/Wv3Vld1ncZw**
+**📑 Slides (PDF): [`docs/Natt-presentation.pdf`](docs/Natt-presentation.pdf)**
 
 > *Natt* is the Wolof word for a **tontine**: a rotating savings group.
 > Every week or month each member pays in, and one member takes the whole pot.
