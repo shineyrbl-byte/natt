@@ -1,14 +1,14 @@
 # Demo video script (3 minutes)
 
-Recorded on the live demo, **https://natt-dakar.fly.dev**. About 400 words of
+Recorded on the live demo, **https://shineyrbl-byte.github.io/natt/**. About 400 words of
 voiceover, read at a calm pace. Lines in *italics* are what you say; the
 rest is what you do on screen.
 
 ## Before you record
 
-1. **Reset the demo** so it starts at 3 of 5 paid: run
-   `fly apps restart natt-dakar`. Wait 10 seconds, then open the site once.
-2. **Note who is #1.** The payout order is drawn at random on every restart.
+1. **Reset the demo** so it starts at 3 of 5 paid: on the home page, tap
+   **↺ Recommencer la démo** (Start the demo again).
+2. **Note who is #1.** The payout order is drawn at random on every reset.
    Open any member and look at the list: the person at position 1 receives
    the pot in round 1. Aminata and Ibrahima are always the two who haven't
    paid; Awa is always the organizer.
@@ -17,10 +17,10 @@ rest is what you do on screen.
    iPhone 12 Pro (390 px wide), zoom 100 %. Or record on a real phone.
 4. **Language:** start in French. If the app opens in English, tap the
    language button until it shows French.
-5. Optional, to show real AI answers instead of the built-in ones:
-   `fly secrets set ANTHROPIC_API_KEY=...` (type it yourself; never paste it
-   into a chat or a commit). Without it, the helper still answers, labelled
-   "Réponse automatique".
+5. The browser demo uses the helper's built-in answers, labelled "Réponse
+   automatique". Claude answers need the server version with
+   `ANTHROPIC_API_KEY` set (type it yourself; never paste it into a chat or
+   a commit).
 6. To switch member: tap **⚡ Natt** (top left) to go home, then tap the next
    name under **🧪 Essayer la démo**.
 
