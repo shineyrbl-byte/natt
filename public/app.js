@@ -645,11 +645,17 @@ window.addEventListener('hashchange', render);
 
 (async () => {
   applyLang();
-  try {
-    config = await api('GET', '/config');
-  } catch {
-    /* offline: use defaults */
-  }
+  const loadConfig = async () => {
+    try {
+      config = await api('GET', '/config');
+    } catch {
+      /* offline: keep the last values */
+    }
+  };
+  await loadConfig();
   render();
+  // Keep the FCFA rate fresh on phones that stay open; the group view
+  // redraws amounts on its next refresh.
+  setInterval(loadConfig, 10 * 60_000);
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
 })();

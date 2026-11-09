@@ -1,6 +1,6 @@
 // Cache the app shell so Natt opens instantly on slow networks.
 // API calls always go to the network (payments must be live).
-const CACHE = 'natt-v4';
+const CACHE = 'natt-v5';
 const SHELL = ['/', '/index.html', '/styles.css', '/app.js', '/i18n.js', '/vendor/qrcode.mjs', '/icons/icon.svg', '/manifest.webmanifest'];
 
 self.addEventListener('install', (e) => {

@@ -33,3 +33,14 @@ test('does not fetch at all when live rates are off', async () => {
   assert.equal(called, false);
   assert.equal(rate.get().xofPerSat, 0.5);
 });
+
+test('retries soon after a failed fetch', async () => {
+  let calls = 0;
+  const fetchImpl = async (...args) => (++calls === 1 ? Promise.reject(new Error('timeout')) : reply({ EUR: 100_000 })(...args));
+  const rate = createRate({ fallback: 0.55, live: true, fetchImpl, retryMs: 10 });
+  await rate.start();
+  assert.equal(rate.get().source, 'fixed');
+  await new Promise((r) => setTimeout(r, 50));
+  rate.stop();
+  assert.equal(rate.get().source, 'live');
+});

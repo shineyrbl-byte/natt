@@ -12,7 +12,7 @@ export function xofPerSatFromEur(eurPerBtc) {
   return (eurPerBtc * XOF_PER_EUR) / 100_000_000;
 }
 
-export function createRate({ fallback, live = false, fetchImpl = fetch, refreshMs = 10 * 60_000, now = Date.now }) {
+export function createRate({ fallback, live = false, fetchImpl = fetch, refreshMs = 10 * 60_000, retryMs = 60_000, now = Date.now }) {
   let current = { xofPerSat: fallback, source: 'fixed', updatedAt: null };
   let timer = null;
 
@@ -25,22 +25,28 @@ export function createRate({ fallback, live = false, fetchImpl = fetch, refreshM
       // 1 sat between 0.01 and 100 FCFA (BTC between ~1.5k and ~15M EUR).
       if (!Number.isFinite(rate) || rate < 0.01 || rate > 100) throw new Error('implausible price');
       current = { xofPerSat: rate, source: 'live', updatedAt: new Date(now()).toISOString() };
+      return true;
     } catch (err) {
       log.warn(`Price refresh failed (${err.message}); keeping ${current.source} rate`);
+      return false;
     }
-    return current;
+  }
+
+  // Refresh every 10 minutes; after a failure, try again in a minute.
+  async function loop() {
+    const ok = await refresh();
+    timer = setTimeout(loop, ok ? refreshMs : retryMs);
+    timer.unref?.();
   }
 
   return {
     get: () => current,
     async start() {
       if (!live) return current;
-      await refresh();
-      timer = setInterval(refresh, refreshMs);
-      timer.unref?.();
+      await loop();
       return current;
     },
     refresh,
-    stop: () => clearInterval(timer),
+    stop: () => clearTimeout(timer),
   };
 }
