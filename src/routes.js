@@ -2,6 +2,8 @@ import { Router } from 'express';
 import { validate, str, int, oneOf, PHONE } from './validate.js';
 import { verifyLedger } from './nostr.js';
 import { badRequest, notFound } from './errors.js';
+import { readFileSync } from 'node:fs';
+import { demoLinksPath } from './config.js';
 
 const GROUP_ID = /^[A-Za-z0-9_-]{8}$/;
 
@@ -33,7 +35,20 @@ export function createRoutes({ config, wallet, ledger, tontine, assistant, rate 
 
   r.get('/config', (req, res) => {
     const { xofPerSat, source, updatedAt } = rate?.get() ?? { xofPerSat: config.xofPerSat, source: 'fixed', updatedAt: null };
-    res.json({ lightning: wallet.name, xofPerSat, rate: { source, updatedAt }, demo: wallet.name === 'simulated', ai: Boolean(config.anthropicApiKey) });
+    res.json({ lightning: wallet.name, xofPerSat, rate: { source, updatedAt }, demo: wallet.name === 'simulated', publicDemo: publicDemo(), ai: Boolean(config.anthropicApiKey) });
+  });
+
+  // Public demo links: simulated wallet only, so no real money is reachable.
+  const publicDemo = () => Boolean(config.publicDemo && wallet.name === 'simulated');
+  r.get('/demo', (req, res) => {
+    if (!publicDemo()) throw notFound();
+    let demo;
+    try {
+      demo = JSON.parse(readFileSync(demoLinksPath(config), 'utf8'));
+    } catch {
+      throw notFound();
+    }
+    res.json({ groupId: demo.groupId, members: demo.links.map(({ name, position, url }) => ({ name, position, path: url.slice(url.indexOf('#')) })) });
   });
 
   r.post('/groups', (req, res) => {

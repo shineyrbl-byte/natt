@@ -147,6 +147,15 @@ function demoBanner() {
   return config.demo ? h('p', { class: 'banner' }, '🧪 ', t('demoBanner')) : null;
 }
 
+// Public demo server only: one button per seeded member.
+function demoCard() {
+  const list = h('div', { class: 'row' });
+  api('GET', '/demo')
+    .then((d) => setChildren(list, d.members.sort((a, b) => a.position - b.position).map((m) => h('a', { class: 'btn secondary', href: m.path }, m.name))))
+    .catch(() => list.closest('section')?.remove());
+  return h('section', { class: 'card stack' }, h('h2', {}, '🧪 ', t('tryDemo')), h('p', { class: 'muted small' }, t('tryDemoHint')), list);
+}
+
 function viewHome() {
   const mine = Object.entries(groups());
   const codeInput = h('input', { id: 'code', name: 'code', autocomplete: 'off', autocapitalize: 'none', maxlength: '120', required: true, placeholder: 'ab12CD34' });
@@ -155,6 +164,7 @@ function viewHome() {
   return [
     h('section', { class: 'hero' }, h('div', { class: 'big', 'aria-hidden': 'true' }, '🤝⚡'), h('h1', {}, t('tagline')), h('p', { class: 'muted' }, t('heroText'))),
     demoBanner(),
+    config.publicDemo ? demoCard() : null,
     h('a', { class: 'btn', href: '#/create' }, '＋ ', t('create')),
     h(
       'form',

@@ -1,5 +1,6 @@
 import { join, dirname } from 'node:path';
-import { loadConfig } from './config.js';
+import { writeFileSync } from 'node:fs';
+import { loadConfig, demoLinksPath } from './config.js';
 import { openDb } from './db.js';
 import { createWallet } from './lightning/index.js';
 import { createLedger, loadOrCreateSecret } from './nostr.js';
@@ -30,7 +31,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     const empty = services.db.prepare('SELECT COUNT(*) AS n FROM groups').get().n === 0;
     if (process.env.SEED_DEMO === '1' && empty && services.wallet.name === 'simulated') {
       const { seedDemo, printDemo } = await import('../scripts/seed.js');
-      printDemo(await seedDemo({ ...services, baseUrl: process.env.PUBLIC_URL || `http://localhost:${config.port}` }));
+      const demo = await seedDemo({ ...services, baseUrl: process.env.PUBLIC_URL || `http://localhost:${config.port}` });
+      printDemo(demo);
+      if (config.publicDemo) writeFileSync(demoLinksPath(config), JSON.stringify(demo), { mode: 0o600 });
     }
   });
 }

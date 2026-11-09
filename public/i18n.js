@@ -87,6 +87,8 @@ export const STRINGS = {
     remindGroup: 'Rappel au groupe WhatsApp',
     remindText: 'Bonjour {name} ! Petit rappel pour notre natt « {group} » : votre cotisation de {sats} sats (≈ {fcfa} FCFA) pour le tour {n} est attendue. Ouvrez Natt pour payer. Jërëjëf !',
     remindAllText: 'Rappel natt « {group} », tour {n} : il manque encore la cotisation de {names}. Ouvrez Natt pour payer. Jërëjëf !',
+    tryDemo: 'Essayer la démo',
+    tryDemoHint: 'Ouvrez le groupe « Natt Marché HLM » comme l’un de ses membres. Essayez de payer avec Aminata ou Ibrahima, puis regardez comme organisatrice avec Awa.',
     noGroups: 'Aucun groupe pour l’instant.',
   },
   wo: {
@@ -174,6 +176,8 @@ export const STRINGS = {
     remindGroup: 'Fàttali mbootaay bi ci WhatsApp',
     remindText: 'Salaam {name} ! Fàttali tuuti ci sunu natt « {group} » : sa natt bu {sats} sats (≈ {fcfa} FCFA) ci wër {n} ñu ngi koy xaar. Ubbil Natt ngir fey. Jërëjëf !',
     remindAllText: 'Fàttali natt « {group} », wër {n} : {names} feyaguñu. Ubbileen Natt ngir fey. Jërëjëf !',
+    tryDemo: 'Jéem demo bi',
+    tryDemoHint: 'Ubbil mbootaay « Natt Marché HLM » ni kenn ci ñi ci bokk. Jéemal fey ak Aminata walla Ibrahima, te nga xool ni ki yor natt bi ak Awa.',
     noGroups: 'Amagul benn mbootaay.',
   },
   en: {
@@ -261,6 +265,8 @@ export const STRINGS = {
     remindGroup: 'Remind the WhatsApp group',
     remindText: 'Hi {name}! A quick reminder for our natt “{group}”: your {sats} sats (≈ {fcfa} FCFA) for round {n} is due. Open Natt to pay. Jërëjëf!',
     remindAllText: 'Natt “{group}” reminder, round {n}: still waiting for {names}. Open Natt to pay. Jërëjëf!',
+    tryDemo: 'Try the demo',
+    tryDemoHint: 'Open the “Natt Marché HLM” group as one of its members. Try paying as Aminata or Ibrahima, then look as the organizer, Awa.',
     noGroups: 'No groups yet.',
   },
 };

@@ -1,5 +1,10 @@
 // All settings come from environment variables so secrets never live in code.
 
+import { join, dirname } from 'node:path';
+
+// Where the seeded demo's member links are saved (public demo only).
+export const demoLinksPath = (config) => join(config.dbPath === ':memory:' ? 'data' : dirname(config.dbPath), 'demo-links.json');
+
 function int(name, fallback) {
   const raw = process.env[name];
   if (raw === undefined || raw === '') return fallback;
@@ -34,6 +39,9 @@ export function loadConfig(env = process.env) {
     // XOF_PER_SAT is the fallback when the live price can't be fetched.
     xofPerSat: Number(env.XOF_PER_SAT || '0.55'),
     liveRate: (env.LIVE_RATE ?? (env.NODE_ENV === 'test' ? '0' : '1')) === '1',
+    // Public demo: show "Try the demo" member buttons on the home page.
+    // Only takes effect with the simulated wallet (no real money).
+    publicDemo: env.PUBLIC_DEMO === '1',
     anthropicApiKey: env.ANTHROPIC_API_KEY || '',
     anthropicModel: env.ANTHROPIC_MODEL || 'claude-opus-5-5',
     rateLimitPerMinute: int('RATE_LIMIT_PER_MINUTE', 120),

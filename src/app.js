@@ -21,7 +21,9 @@ export function createApp({ config, wallet, ledger, tontine, assistant, rate }) 
   app.use('/api', createRoutes({ config, wallet, ledger, tontine, assistant, rate }));
 
   app.get('/vendor/qrcode.mjs', (req, res) => res.type('text/javascript').sendFile(QR_MODULE, { maxAge: '7d' }));
-  app.use(express.static(PUBLIC_DIR, { maxAge: '1h', index: 'index.html' }));
+  // Revalidate app files on every load (cheap 304s via ETag) so a new
+  // deploy reaches phones right away. The QR library above never changes.
+  app.use(express.static(PUBLIC_DIR, { index: 'index.html', setHeaders: (res) => res.setHeader('Cache-Control', 'no-cache') }));
 
   // Never leak stack traces to clients.
   app.use((err, req, res, _next) => {

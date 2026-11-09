@@ -66,3 +66,8 @@ test('rejects bad input, unknown fields and missing auth', async () => {
   assert.equal((await call('GET', `/groups/${org.groupId}`)).status, 401);
   assert.equal((await call('GET', `/groups/${org.groupId}`, null, { ...org, token: 'wrong' })).status, 401);
 });
+
+test('demo member links are hidden unless the public demo is switched on', async () => {
+  assert.equal((await call('GET', '/demo')).status, 404);
+  assert.equal((await call('GET', '/config')).body.publicDemo, false);
+});
