@@ -1,5 +1,7 @@
 # Natt ⚡ Lightning tontines for West Africa
 
+**▶ Live demo: https://natt-dakar.fly.dev** (demo wallet, no real bitcoin). Tap a member under "Try the demo".
+
 > *Natt* is the Wolof word for a **tontine**: a rotating savings group.
 > Every week or month each member pays in, and one member takes the whole pot.
 > The order rotates until everyone has received it once.
@@ -36,6 +38,10 @@ Full user story and pain points: [`docs/PROBLEM.md`](docs/PROBLEM.md).
 | 💬 **Natt Helper** | "C'est quand mon tour ?" "Qui n'a pas payé ?" Plain-language answers with FCFA amounts. Works offline with built-in answers; uses Claude when an API key is set. |
 | 🔔 **WhatsApp reminders** | The organizer taps 🔔 next to anyone who hasn't paid and WhatsApp opens with a polite reminder, ready to send (in French, Wolof or English). One more tap reminds the whole WhatsApp group. Natt never sends messages by itself. |
 | 📱 **Made for real phones** | ~60 KB PWA, no framework, in French, Wolof and English (French by default), large buttons, works on 3G, installable. Invites go out over WhatsApp. |
+
+## Hosted demo
+
+`fly.toml` deploys the demo to Fly.io with `fly deploy`: simulated wallet, public "Try the demo" buttons and a live FCFA rate. There is no volume, so every fresh machine starts with a clean demo group.
 
 ## Quick start (one command)
 
