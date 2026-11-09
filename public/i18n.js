@@ -89,6 +89,9 @@ export const STRINGS = {
     remindAllText: 'Rappel natt « {group} », tour {n} : il manque encore la cotisation de {names}. Ouvrez Natt pour payer. Jërëjëf !',
     tryDemo: 'Essayer la démo',
     tryDemoHint: 'Ouvrez le groupe « Natt Marché HLM » comme l’un de ses membres. Essayez de payer avec Aminata ou Ibrahima, puis regardez comme organisatrice avec Awa.',
+    helperQ1: 'C’est quand mon tour ?',
+    helperQ2: 'Qui n’a pas payé ?',
+    helperOpen: 'Poser une question à Natt Helper',
     noGroups: 'Aucun groupe pour l’instant.',
   },
   wo: {
@@ -178,6 +181,9 @@ export const STRINGS = {
     remindAllText: 'Fàttali natt « {group} », wër {n} : {names} feyaguñu. Ubbileen Natt ngir fey. Jërëjëf !',
     tryDemo: 'Jéem demo bi',
     tryDemoHint: 'Ubbil mbootaay « Natt Marché HLM » ni kenn ci ñi ci bokk. Jéemal fey ak Aminata walla Ibrahima, te nga xool ni ki yor natt bi ak Awa.',
+    helperQ1: 'Kañ la sama wër ?',
+    helperQ2: 'Kan moo feyagul ?',
+    helperOpen: 'Laaj Natt Helper',
     noGroups: 'Amagul benn mbootaay.',
   },
   en: {
@@ -267,6 +273,9 @@ export const STRINGS = {
     remindAllText: 'Natt “{group}” reminder, round {n}: still waiting for {names}. Open Natt to pay. Jërëjëf!',
     tryDemo: 'Try the demo',
     tryDemoHint: 'Open the “Natt Marché HLM” group as one of its members. Try paying as Aminata or Ibrahima, then look as the organizer, Awa.',
+    helperQ1: 'When is my turn?',
+    helperQ2: 'Who hasn’t paid?',
+    helperOpen: 'Ask Natt Helper a question',
     noGroups: 'No groups yet.',
   },
 };

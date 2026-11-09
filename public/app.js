@@ -484,9 +484,13 @@ function helperCard(gid, auth) {
   const input = h('input', { id: 'q', maxlength: '500', placeholder: t('helperHint') });
   const out = h('div', { 'aria-live': 'polite' });
   const err = h('p', { class: 'error', role: 'alert' });
-  return h(
+  // One-tap example questions, so nobody has to type to try it.
+  const example = (key) =>
+    h('button', { type: 'button', class: 'chip', onclick: () => { input.value = t(key); form.requestSubmit(); } }, t(key));
+  const form = h(
     'form',
     {
+      id: 'helper',
       class: 'card stack',
       onsubmit: action(async () => {
         if (!input.value.trim()) return;
@@ -496,10 +500,31 @@ function helperCard(gid, auth) {
       }, err),
     },
     h('h2', {}, '💬 ', t('helper')),
+    h('div', { class: 'chips' }, example('helperQ1'), example('helperQ2')),
     field(t('question'), input),
     err,
     out,
     h('button', { type: 'submit', class: 'secondary' }, t('ask')),
+  );
+  return form;
+}
+
+// Floating button: the helper card sits low on the page, so jump to it.
+function helperButton() {
+  return h(
+    'button',
+    {
+      type: 'button',
+      class: 'fab',
+      'aria-label': t('helperOpen'),
+      title: t('helperOpen'),
+      onclick: () => {
+        document.getElementById('helper')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById('q')?.focus({ preventScroll: true });
+      },
+    },
+    '💬 ',
+    t('helper'),
   );
 }
 
@@ -613,7 +638,7 @@ async function viewGroup(gid, params) {
   pollTimer = setInterval(() => {
     if (document.visibilityState === 'visible') refresh();
   }, 4000);
-  return [live, actions, extras];
+  return [live, actions, extras, helperButton()];
 }
 
 // ---------- router ----------
